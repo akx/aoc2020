@@ -1,0 +1,2 @@
+import itertools, functools, operator
+print(next(functools.reduce(operator.mul, x) for x in itertools.combinations([int(ent.strip()) for ent in open("../inputs/d01-input.txt", "r")], 3) if sum(x) == 2020))
