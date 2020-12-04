@@ -4,8 +4,10 @@ def read_d04():
         data = f.read()
         data = data.replace("\n\n", SEP)
         data = data.replace("\n", " ")
-    passports = [raw.split() for raw in data.split(SEP)]
-    passports = [dict(sorted(p.split(":", 1) for p in row)) for row in passports]
+    passports = [
+        dict(sorted(p.split(":", 1) for p in row))
+        for row in (raw.split() for raw in data.split(SEP))
+    ]
     return passports
 
 
