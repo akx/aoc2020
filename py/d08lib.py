@@ -36,10 +36,12 @@ def run_op(state: State, opt):
 
 def run_until_loop(state, ops):
     opids_seen = set()
+    reason = "finish"
     while state.opc < len(ops):
         op = ops[state.opc]
         if state.opc in opids_seen:
-            return (state, False)
+            reason = "loop"
+            break
         opids_seen.add(state.opc)
         state = run_op(state, op)
-    return (state, True)
+    return (state, reason, opids_seen)
