@@ -1,30 +1,23 @@
-def read_d08(filename="../inputs/d08-input.txt"):
-    ops = []
-    with open(filename) as f:
-        for l in f:
-            op, val = l.split(None, 1)
-            val = int(val)
-            ops.append((op, val))
-    return ops
+from d08lib import read_d08, State, run_op
+
+
+def run_until_loop(state, ops):
+    opids_seen = set()
+    while state.opc < len(ops):
+        op = ops[state.opc]
+        if state.opc in opids_seen:
+            break
+        opids_seen.add(state.opc)
+        state = run_op(state, op)
+    return state
+
 
 def main():
     ops = read_d08()
-    opids_seen = set()
-    opc = 0
-    acc = 0
-    while True:
-        op, val = ops[opc]
-        if opc in opids_seen:
-            print(acc)
-            break
-        opids_seen.add(opc)
-        if op == "nop":
-            opc += 1
-        elif op == "acc":
-            acc += val
-            opc += 1
-        elif op == "jmp":
-            opc += val
+    state = State(opc=0, acc=0)
+    state = run_until_loop(state, ops)
+    print("final state", state)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
